@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TP / SL Calculator</title>
+
+<style>
+  body {
+    background: #0f172a;
+    color: #e5e7eb;
+    font-family: system-ui;
+    padding: 20px;
+    max-width: 420px;
+    margin: auto;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+    background: #1e293b;
+    color: #e5e7eb;
+    margin-bottom: 20px;
+  }
+
+  .box {
+    background: #020617;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+
+  .label {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
+  .value {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 5px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  button:active {
+    background: #1d4ed8;
+  }
+
+  .hint {
+    font-size: 13px;
+    opacity: 0.6;
+    margin-top: 10px;
+    text-align: center;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>📊 TP / SL Calculator</h2>
+
+<input type="number" id="price" placeholder="Enter price (e.g. 87228)">
+
+<div class="box">
+  <div class="label">📈 Take Profit (+1%)</div>
+  <div class="value" id="tp">—</div>
+  <button onclick="copyText('tp')">Copy TP</button>
+</div>
+
+<div class="box">
+  <div class="label">🛑 Stop Loss Trigger (−0.5%)</div>
+  <div class="value" id="slTrigger">—</div>
+  <button onclick="copyText('slTrigger')">Copy SL Trigger</button>
+</div>
+
+<div class="box">
+  <div class="label">⚠️ Stop Loss Limit (auto below)</div>
+  <div class="value" id="slLimit">—</div>
+  <button onclick="copyText('slLimit')">Copy SL Limit</button>
+</div>
+
+<div class="hint">
+  SL limit is slightly lower so it fills safely
+</div>
+
+<script>
+const priceInput = document.getElementById("price");
+
+priceInput.addEventListener("input", () => {
+  const price = parseFloat(priceInput.value);
+  if (!price) return;
+
+  const tp = (price * 1.01).toFixed(2);
+  const slTrigger = (price * 0.995).toFixed(2);
+  const slLimit = (slTrigger * 0.999).toFixed(2);
+
+  document.getElementById("tp").textContent = tp;
+  document.getElementById("slTrigger").textContent = slTrigger;
+  document.getElementById("slLimit").textContent = slLimit;
+});
+
+function copyText(id) {
+  const text = document.getElementById(id).textContent;
+
+  const tempInput = document.createElement("textarea");
+  tempInput.value = text;
+  document.body.appendChild(tempInput);
+
+  tempInput.select();
+  tempInput.setSelectionRange(0, 99999);
+
+  document.execCommand("copy");
+  document.body.removeChild(tempInput);
+
+  alert("Copied: " + text);
+}
+</script>
+
+</body>
+</html>
